@@ -6,8 +6,8 @@ class CategoryTest < ActiveSupport::TestCase
     item = category.items.create!(name: 'Ruby入門')
     order = item.orders.create!(customer: 'Alice')
 
-    item.destroy
-    assert item.errors.present?
+    assert_nothing_raised { item.destroy }
+    assert_equal ["Cannot delete record because dependent orders exist"], item.errors.messages[:base]
 
     assert_raises(ActiveRecord::DeleteRestrictionError) { category.destroy }
   end
