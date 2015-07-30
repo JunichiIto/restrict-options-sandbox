@@ -8,9 +8,11 @@ class CategoryTest < ActiveSupport::TestCase
 
     # 子レコードがあると削除できない
     refute item.destroy
-    assert_equal ["Cannot delete record because dependent orders exist"], item.errors.messages[:base]
-
-    assert_raises(ActiveRecord::DeleteRestrictionError) { category.destroy }
+    assert_equal ["Cannot delete record because dependent orders exist"],
+                 item.errors.messages[:base]
+    assert_raises(ActiveRecord::DeleteRestrictionError) do
+      category.destroy
+    end
 
     # 子レコードがなければ削除可能
     assert order.destroy
